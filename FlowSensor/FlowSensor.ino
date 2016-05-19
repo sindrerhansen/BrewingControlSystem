@@ -3,19 +3,21 @@
 
 volatile unsigned long  total_flow;
 float totalLiter;
-unsigned int  l_hour;          // Calculated litres/hour                      
-static int flowmeter = 2;  // Flow Meter Pin number
+unsigned int  l_hour;							// Calculated litres/hour                      
+static int flowmeter = 2;						// Flow Meter Pin number
 unsigned long cloopTime;
 String input_String;
-static String MyName = "FM";
+static String MyName = "FM";					// This is to define flow sensor  
 bool input_StringComplete;
 
 
 #define MEGA_MASTER_ADDRESS 0x9
-#define NANO_FM_ADDRESS 0x8
+#define NANO_FLOW_TO_MASHTANK_ADDRESS 0x8
+#define NANO_FLOW_TO_BOILTANK_ADDRESS 0x7
+#define NANO_TEMPERATURECOLLECTOR_ADDRESS 0x6
 
 
-void flow()                  // Interruot function
+void flow()										// Interruot function
 {
 	total_flow++;
 }
@@ -25,11 +27,11 @@ void setup()
 {
 	pinMode(flowmeter, INPUT);
 	Serial.begin(38400);
-	Wire.begin(NANO_FM_ADDRESS);
+	Wire.begin(NANO_FLOW_TO_MASHTANK_ADDRESS);	//Change to sensor used
 	Wire.onReceive(wireReceiveEvent);
 	total_flow = 0;
-	attachInterrupt(0, flow, RISING); // Setup Interrupt 
-	sei();                            // Enable interrupts  
+	attachInterrupt(0, flow, RISING);			// Setup Interrupt 
+	sei();										// Enable interrupts  
 	cloopTime = millis();
 }
 

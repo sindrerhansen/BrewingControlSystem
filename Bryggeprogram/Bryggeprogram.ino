@@ -907,6 +907,7 @@ void loop() {
 			MashTank.TemperatureTankSetPoint = Sparge.TemperatureSP;
 			remainingTime = - elapsedTimeSeconds;
 
+			Hlt.Element1.Value = TankTemperaturOnOffRegulator(Hlt.TemperatureTankSetPoint, Hlt.TemperatureTank, Hlt.LevelOverHeatingElements.State);
 			MashTank.TransferPump.Value = true;
 			if (MashTank.AddedVolume <(MashInn.AddVolumeSP + Sparge.AddVolumeSP))
 			{

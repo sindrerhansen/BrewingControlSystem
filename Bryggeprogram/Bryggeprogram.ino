@@ -7,7 +7,7 @@
 #include "Serial.h"
 
 
-//Define Variables we'll be connecting to
+//Define Variables
 double Setpoint, Input, Output;
 unsigned long Ts;
 unsigned long Tc;
@@ -18,6 +18,7 @@ bool ElementOnOff = false;
 String element = "";
 unsigned long now = millis();
 unsigned long TotalEnergyUsed = 0;
+unsigned int HartConter = 0;
 
 
 #pragma region Constants
@@ -463,6 +464,15 @@ void loop() {
 #pragma region SendingMessageToSerial
 	if (millis() >= (cloopTime + SerialSendingRate))
 	{
+
+		if (HartConter==32000)
+		{
+			HartConter = 0;
+		}
+		else
+		{
+			HartConter++;
+		}
 		cloopTime = millis();			     // Updates cloopTime
 
 		AllInfoString += "HltTe" + String(Hlt.TemperatureTank) + systemDevider;
@@ -501,6 +511,7 @@ void loop() {
 		AllInfoString += "Timer" + String(elapsedTimeSeconds) + systemDevider;
 		AllInfoString += "RemTi" + String(remainingTime) + systemDevider;
 		AllInfoString += "CleSt" + String(CleaningState) + systemDevider;
+		AllInfoString += "HartConter" + String(HartConter) + systemDevider;
 
 		Serial.println(AllInfoString);
 		AllInfoString = "";

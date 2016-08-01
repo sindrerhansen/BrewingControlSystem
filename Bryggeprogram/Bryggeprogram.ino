@@ -1,11 +1,6 @@
 // This code is for a Arduino Mega. By Sindre
 //#include "Regulators.h"
-#include "SystemState.h"
-#include "SystemState.h"
-#include "SystemState.h"
-#include "SystemState.h"
 #include "Serial.h"
-
 
 //Define Variables
 double Setpoint, Input, Output;

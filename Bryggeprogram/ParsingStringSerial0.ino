@@ -131,6 +131,14 @@ void ParsingStringSerial0()
 			{
 				Serial3.println("x");
 			}
+			else if (input_0_String.startsWith("SetMesh"))
+			{
+
+			}
+			else if (input_0_String.startsWith("SetBoil"))
+			{
+
+			}
 		}
 
 		else if (input_0_String.startsWith("PREPCLEAN"))

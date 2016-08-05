@@ -10,6 +10,11 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+# Visual Micro
+*.filters
+__vm/
+[Vv]isual [Mm]icro/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

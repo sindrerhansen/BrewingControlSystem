@@ -16,6 +16,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Bryggeprogram.ino" />
+    <None Include="CleaningSequense.ino" />
+    <None Include="BrewingSequense.ino" />
+    <None Include="ParsingStringSerial0.ino" />
+    <None Include="ParsingStringSerial1.ino" />
+    <None Include="TankTemperaturOnOffRegulator.ino" />
+    <None Include="PWM_Reelay.ino" />
+    <None Include="Tank_PWM_ReelayRegulator.ino" />
+    <None Include="RIMS_PWM_ReelayRegulator.ino" />
+    <None Include="ParsingStringSerial2.ino" />
+    <None Include="ParsingStringSerial3.ino" />
+    <None Include="Init.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Visual Micro\.Bryggeprogram.vsarduino.h">

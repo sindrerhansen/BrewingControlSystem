@@ -240,8 +240,8 @@ void loop() {
 
 #pragma region Reading Digital Sensors
 
-	BoilTank.LevelOverHeatingElements.State = digitalRead(BoilTank.LevelOverHeatingElements.InputPin);
-	Hlt.LevelOverHeatingElements.State = digitalRead(Hlt.LevelOverHeatingElements.InputPin);
+	BoilTank.LevelOverHeatingElements.State = !digitalRead(BoilTank.LevelOverHeatingElements.InputPin);
+	Hlt.LevelOverHeatingElements.State = !digitalRead(Hlt.LevelOverHeatingElements.InputPin);
 
 #pragma endregion Reading Digital Sensors
 

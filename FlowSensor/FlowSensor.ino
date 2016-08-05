@@ -3,21 +3,22 @@
 
 volatile unsigned long  total_flow;
 float totalLiter;
-unsigned int  l_hour;							// Calculated litres/hour                      
+unsigned int  l_hour;							// Calculated liters/hour                      
 static int flowmeter = 2;						// Flow Meter Pin number
 unsigned long cloopTime;
 String input_String;
-static String MyName = "FM";					// This is to define flow sensor  
+
 bool input_StringComplete;
 
 
-#define MEGA_MASTER_ADDRESS 0x9
-#define NANO_FLOW_TO_MASHTANK_ADDRESS 0x8
-#define NANO_FLOW_TO_BOILTANK_ADDRESS 0x7
-#define NANO_TEMPERATURECOLLECTOR_ADDRESS 0x6
+#define MASTER_ADDRESS 0x9
+#define TEMPERATURE_COLLECTOR_ADDRESS 0x8
+#define MASH_TANK_FLOW_IN_ADDRESS 0x7
+#define BOIL_TANK_FLOW_IN_ADDRESS 0x6
 
+static String MyName = String(MASH_TANK_FLOW_IN_ADDRESS);					// This is to define flow sensor  
 
-void flow()										// Interruot function
+void flow()										// Interrupt function
 {
 	total_flow++;
 }
@@ -27,7 +28,7 @@ void setup()
 {
 	pinMode(flowmeter, INPUT);
 	Serial.begin(38400);
-	Wire.begin(NANO_FLOW_TO_MASHTANK_ADDRESS);	//Change to sensor used
+	Wire.begin(MASH_TANK_FLOW_IN_ADDRESS);	//Change to sensor used
 	Wire.onReceive(wireReceiveEvent);
 	total_flow = 0;
 	attachInterrupt(0, flow, RISING);			// Setup Interrupt 
@@ -65,11 +66,12 @@ void loop()
 		cloopTime = millis();			     // Updates cloopTime
         totalLiter = total_flow / 444.4444444 ;
         Serial.println(totalLiter);		
+		
 		// Sending on I2C buss
 		char charSendBuffer[20];
 		String sendString = MyName + String(totalLiter);
 		sendString.toCharArray(charSendBuffer, 20);
-		Wire.beginTransmission(MEGA_MASTER_ADDRESS);
+		Wire.beginTransmission(MASTER_ADDRESS);
 		Wire.write(charSendBuffer);
 		Wire.endTransmission();
 

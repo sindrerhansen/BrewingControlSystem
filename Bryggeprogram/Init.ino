@@ -1,5 +1,8 @@
 void Init() {
 
+	Wire.begin(MASTER_ADDRESS);
+	Wire.onReceive(I2C_ReceiveEvent);
+
 	windowStartTime = millis();
 	Ts = millis();
 	Tc = millis();
@@ -11,7 +14,7 @@ void Init() {
 
 
 	Serial.begin(9600);
-	input_0_String.reserve(200);
+	innString.reserve(200);
 
 	Serial1.begin(38400);
 	input_1_String.reserve(200);

@@ -50,4 +50,16 @@ extern "C" void __cxa_pure_virtual() {;}
 #undef PSTR
 #define PSTR(string_literal) ((const PROGMEM char *)(string_literal))")
 #include "Bryggeprogram.ino"
+#include "BrewingSequense.ino"
+#include "CleaningSequense.ino"
+#include "I2C_ReceiveEvent.ino"
+#include "Init.ino"
+#include "PWM_Reelay.ino"
+#include "ParsingStringFromBoilFlowIn.ino"
+#include "ParsingStringFromBrewer.ino"
+#include "ParsingStringFromMashFlowIn.ino"
+#include "ParsingStringFromTemperaturCollector.ino"
+#include "RIMS_PWM_ReelayRegulator.ino"
+#include "TankTemperaturOnOffRegulator.ino"
+#include "Tank_PWM_ReelayRegulator.ino"
 #endif

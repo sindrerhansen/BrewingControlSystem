@@ -13,7 +13,7 @@ void BrewingStateSequense()
 
 		break;
 
-	case 10: // Prepar HLT tank temperature
+	case 10: // Prepare HLT tank temperature
 
 		if (previouslyBrewingState != BrewingState)
 		{
@@ -29,7 +29,7 @@ void BrewingStateSequense()
 
 		break;
 
-	case 20: // Transfering water from HLT to Mash tank, waiting for grain
+	case 20: // Transferring water from HLT to Mash tank, waiting for grain
 
 		if (previouslyBrewingState != BrewingState)
 		{
@@ -96,7 +96,7 @@ void BrewingStateSequense()
 
 		break;
 
-	case 31: //Heating Mash to next setpoint (Step 2)
+	case 31: //Heating Mash to next set point (Step 2)
 
 		if (previouslyBrewingState != BrewingState)
 		{
@@ -156,7 +156,7 @@ void BrewingStateSequense()
 		previouslyBrewingState = BrewingState;
 		break;
 
-	case 33://Heating Mash to next setpoint (Step 3)
+	case 33://Heating Mash to next set point (Step 3)
 
 		if (previouslyBrewingState != BrewingState)
 		{
@@ -214,7 +214,7 @@ void BrewingStateSequense()
 
 		break;
 
-	case 35: //Heating Mash to next setpoint (Step 4)
+	case 35: //Heating Mash to next set point (Step 4)
 
 		if (previouslyBrewingState != BrewingState)
 		{

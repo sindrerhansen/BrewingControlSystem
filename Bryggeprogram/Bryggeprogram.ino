@@ -1,6 +1,12 @@
 // This code is for a Arduino Mega. By Sindre
 //#include "Regulators.h"
 #include "Serial.h"
+#include <Wire.h>
+
+#define MASTER_ADDRESS 0x9
+#define TEMPERATURE_COLLECTOR_ADDRESS 0x8
+#define MASH_TANK_FLOW_IN_ADDRESS 0x7
+#define BOIL_TANK_FLOW_IN_ADDRESS 0x6
 
 //Define Variables
 double Setpoint, Input, Output;
@@ -130,7 +136,7 @@ int previouslyCleaningState = 0;
 String test = "";
 String test2 = "";
 
-String input_0_String = "";
+String innString = "";
 boolean input_0_StringComplete = false;
 
 String input_1_String = "";
@@ -162,7 +168,7 @@ void setup() {
 void serialEvent(){
 	while (Serial.available()) {
 		char inChar = (char)Serial.read();
-		input_0_String += inChar;
+		innString += inChar;
 		if (inChar == '\n') {
 			input_0_StringComplete = true;
 		}
@@ -227,16 +233,37 @@ void loop() {
 	MessageToUser = "";
 #pragma endregion Resetting outputs
 	// From User interface
-	ParsingStringSerial0();
+	if (input_0_StringComplete) {
+		ParsingStringFromBrewer(innString);
+		innString = "";                                                       //clear the string:
+		input_0_StringComplete = false;                                            //reset the flag used to tell if we have received a completed string from the PC
+
+	}
+		
 
 	// From Mash Tank flow counter
-	ParsingStringSerial1();
+	if (input_1_StringComplete) {
+		ParsingStringFromMashFlowIn(input_1_String);
+		input_1_String = "";
+		input_1_StringComplete = false;
+	}
+		
 
 	// From temperature collector
-	ParsingStringSerial2();
+	if (input_2_StringComplete) {
+		ParsingStringFromTemperaturCollector(input_2_String);
+		input_2_String = "";
+		input_2_StringComplete = false;
+	}
+	
 
 	// From Boil Tank flow counter
-	ParsingStringSerial3();
+	if (input_3_StringComplete) {
+		ParsingStringFromBoilFlowIn(input_3_String);
+		input_3_String = "";
+		input_3_StringComplete = false;
+	}
+	
 
 #pragma region Reading Digital Sensors
 

@@ -155,88 +155,7 @@ String MessageToUser = "";
 
 void setup() {
 	
-	windowStartTime = millis();
-	Ts = millis();
-	Tc = millis();
-
-	//initialize the variables we're linked to
-	Setpoint = 100;
-
-
-
-
-	Serial.begin(9600);
-	input_0_String.reserve(200);
-
-	Serial1.begin(38400);
-	input_1_String.reserve(200);
-
-	Serial2.begin(9600);
-	input_2_String.reserve(200);
-
-	Serial3.begin(38400);
-	input_3_String.reserve(200);
-
-	timez = millis();
-	cloopTime = millis();
-
-
-#pragma region Init_HLT
-	// Setting the HLT inn and out pins 
-	Hlt.CirculationPump.OutputPin = 4;
-	Hlt.TransferPump.OutputPin = 5;
-	Hlt.Element1.OutputPin = 20;
-	Hlt.Element2.OutputPin = 21;
-	Hlt.DrainValve.OutputPin = 26;
-	Hlt.LevelOverHeatingElements.InputPin = 22;
-	Hlt.LevelHigh.InputPin = 27;
-	// Setting the HLT inn and out
-	pinMode(Hlt.CirculationPump.OutputPin, OUTPUT);
-	pinMode(Hlt.TransferPump.OutputPin, OUTPUT);
-	pinMode(Hlt.DrainValve.OutputPin, OUTPUT);
-	pinMode(Hlt.Element1.OutputPin, OUTPUT);
-	pinMode(Hlt.Element2.OutputPin, OUTPUT);
-	pinMode(Hlt.LevelOverHeatingElements.InputPin, INPUT);
-	pinMode(Hlt.LevelHigh.InputPin, INPUT);
-#pragma endregion Init_HLT
-
-#pragma region Init_MashTank
-	// Setting the  MashTank inn and out pins 
-	MashTank.CirculationPump.OutputPin = 6;
-	MashTank.TransferPump.OutputPin = 7;
-	MashTank.Element1.OutputPin = 30;
-	MashTank.Element2.OutputPin = 31;
-	MashTank.DrainValve.OutputPin = 32;
-	MashTank.LevelOverHeatingElements.InputPin = 35;
-	MashTank.LevelHigh.InputPin = 36;
-	// Setting the MashTank inn and out
-	pinMode(MashTank.CirculationPump.OutputPin, OUTPUT);
-	pinMode(MashTank.TransferPump.OutputPin, OUTPUT);
-	pinMode(MashTank.DrainValve.OutputPin, OUTPUT);
-	pinMode(MashTank.Element1.OutputPin, OUTPUT);
-	pinMode(MashTank.Element2.OutputPin, OUTPUT);
-	pinMode(MashTank.LevelOverHeatingElements.InputPin, INPUT);
-	pinMode(MashTank.LevelHigh.InputPin, INPUT);
-#pragma endregion Init_MashTank
-
-#pragma region Init_BoilTank
-	// Setting the BoilTank inn and out pins 
-	BoilTank.CirculationPump.OutputPin = 8;
-	BoilTank.TransferPump.OutputPin = 9;
-	BoilTank.Element1.OutputPin = 40;
-	BoilTank.Element2.OutputPin = 41;
-	BoilTank.DrainValve.OutputPin = 42;
-	BoilTank.LevelOverHeatingElements.InputPin = 45;
-	BoilTank.LevelHigh.InputPin = 46;
-	// Setting the BoilTank inn and out
-	pinMode(BoilTank.CirculationPump.OutputPin, OUTPUT);
-	pinMode(BoilTank.TransferPump.OutputPin, OUTPUT);
-	pinMode(BoilTank.DrainValve.OutputPin, OUTPUT);
-	pinMode(BoilTank.Element1.OutputPin, OUTPUT);
-	pinMode(BoilTank.Element2.OutputPin, OUTPUT);
-	pinMode(BoilTank.LevelOverHeatingElements.InputPin, INPUT);
-	pinMode(BoilTank.LevelHigh.InputPin, INPUT);
-#pragma endregion Init_BoilTank
+	Init();
 
 }
 
@@ -309,82 +228,15 @@ void loop() {
 #pragma endregion Resetting outputs
 	// From User interface
 	ParsingStringSerial0();
-	// From Mash Tank flow conter
+
+	// From Mash Tank flow counter
 	ParsingStringSerial1();
-	// From temprature collector
-	if (input_2_StringComplete)
-	{
-		int valueStartIndex = 0;
-		int conter = 0;
-		String _resiveArray[8];
-		input_2_String.trim();
-		for (int i = 0; i <= input_2_String.length(); i++)
-		{ 
-			if (valueDevider == input_2_String.charAt(i))
-			{
-				_resiveArray[conter] = input_2_String.substring(valueStartIndex, i);
-				valueStartIndex = i + 1;
-				conter++;
-			}
-		}
-		if (_resiveArray[0].toFloat()>=0)
-		{
-			Hlt.TemperatureTank = _resiveArray[0].toFloat();
-		}
 
-		 if (_resiveArray[1].toFloat() >= 0)
-		{
-			MashTank.TemperatureTank = _resiveArray[1].toFloat();
-		}
+	// From temperature collector
+	ParsingStringSerial2();
 
-		if (_resiveArray[2].toFloat() >= 0)
-		{
-			MashTank.TemperatureHeatingRetur = _resiveArray[2].toFloat();
-		}
-
-		if (_resiveArray[3].toFloat() >= 0)
-		{
-			BoilTank.TemperatureTank = _resiveArray[3].toFloat();
-		}
-
-		if (_resiveArray[4].toFloat() >= 0)
-		{
-			ambientTemperature = _resiveArray[4].toFloat();
-		}
-		if (_resiveArray[5].toFloat() >= 0)
-		{
-			RimsRightOuteSideTemp = _resiveArray[5].toFloat();
-		}
-		if (_resiveArray[6].toFloat()>=0)
-		{
-			RimsLeftOuteSideTemp = _resiveArray[6].toFloat();
-		}
-
-		if (_resiveArray[7].toFloat()>=0)
-		{
-			BoilTank.TemperatureHeatingRetur = _resiveArray[7].toFloat();
-		}
-
-		input_2_String = "";
-		input_2_StringComplete = false;
-	}
-	// From Boil Tank flow conter
-	if (input_3_StringComplete)
-	{
-		input_3_String.trim();
-		String _totalVolume = input_3_String.substring(0, 6);
-		_totalVolume.trim();
-		float _volume = _totalVolume.toFloat();
-		if (abs(lastTotVolumeBoil-_volume) < 0.5)
-		{
-			BoilTank.AddedVolume = _volume;
-			BoilTank.CurentVolume = BoilTank.AddedVolume;
-		}
-		lastTotVolumeBoil = _volume;
-		input_3_String = "";
-		input_3_StringComplete = false;
-		
-	}
+	// From Boil Tank flow counter
+	ParsingStringSerial3();
 
 #pragma region Reading Digital Sensors
 
@@ -408,19 +260,17 @@ void loop() {
 		Cleaning = false;
 	}
 
-#pragma region Brygge sekvens
+
 	if (!Cleaning)
 	{ 
 		BrewingStateSequense();
 	}
-#pragma endregion Brygge sekvens
 
-#pragma region Cleaning sekvens
 	else
 	{		
 		CleaningSequense();
 	}
-#pragma endregion Cleaning sekvens	
+
 
 #pragma region Setting_Outputs 
 
@@ -512,115 +362,7 @@ void loop() {
 		AllInfoString = "";
 
 	}
-
-
-
 #pragma endregion SendingMessageToSerial
 
 	delay(10);
-}
-
-bool TankTemperaturOnOffRegulator(double setpoint, double actual, bool overElement)
-{
-	bool output;
-	if (overElement)
-	{
-		if (actual <= setpoint)
-		{
-			output = true;
-		}
-		else
-		{
-			output = false;
-		}
-	}
-
-	else
-	{
-		output = false;
-		//MessageToUser = "Add water to hot liquor tank!!";
-	}
-
-	return output;
-}
-
-bool PWM_Reelay(double setpoint, double actual, double ratio)
-{
-	bool output = false;
-	Tc = millis();
-	double PWD_Window = 5000;
-
-	if (actual < setpoint)
-	{
-		if (ratio > 0)
-		{
-			if (ratio < 1)
-			{
-				if (Ts + PWD_Window*ratio > Tc)
-				{
-					output = true;
-				}
-				else
-				{
-					output = false;
-				}
-				if (Ts + PWD_Window < Tc)
-				{
-					Ts = Tc;
-				}
-			}
-			else
-			{
-				output = true;
-			}
-		}
-		else
-		{
-			output = false;
-		}
-	}
-
-	else
-	{
-		output = false;
-	}
-	if (actual < (setpoint - 3.0))
-	{
-		output = true;
-	}
-
-	return output;
-}
-
-bool Tank_PWM_ReelayRegulator(double setpoint, double actual, double ratio, bool overElement)
-{
-	bool output;
-
-	if (overElement)
-	{
-		output = PWM_Reelay(setpoint, actual, ratio);
-	}
-	else
-	{
-
-		output = false;
-	}
-
-	return output;
-}
-
-bool RIMS_PWM_ReelayRegulator(double setpoint, double tempInn, double tempOut, double ratio, double RIMS_outesideTemp)
-{
-	bool output = false;
-
-	if (tempOut < (tempInn + 9.0) && tempOut < (setpoint + 5.0) && RIMS_outesideTemp < tempInn && RIMS_outesideTemp < setpoint)
-	{
-		output = PWM_Reelay(setpoint, tempInn, 0.9);
-	}
-	else
-	{
-		output = false;
-	}
-
-	return output;
 }

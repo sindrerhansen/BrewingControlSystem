@@ -23,11 +23,11 @@
     <None Include="Tank_PWM_ReelayRegulator.ino" />
     <None Include="RIMS_PWM_ReelayRegulator.ino" />
     <None Include="Init.ino" />
-    <None Include="I2C_ReceiveEvent.ino" />
+    <None Include="ParsingStringFromBoilFlowIn.ino" />
     <None Include="ParsingStringFromBrewer.ino" />
     <None Include="ParsingStringFromMashFlowIn.ino" />
     <None Include="ParsingStringFromTemperaturCollector.ino" />
-    <None Include="ParsingStringFromBoilFlowIn.ino" />
+    <None Include="I2C_ReceiveEvent.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Visual Micro\.Bryggeprogram.vsarduino.h">

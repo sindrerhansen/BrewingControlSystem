@@ -8,19 +8,6 @@
 #define MASH_TANK_FLOW_IN_ADDRESS 0x7
 #define BOIL_TANK_FLOW_IN_ADDRESS 0x6
 
-//Define Variables
-double Setpoint, Input, Output;
-unsigned long Ts;
-unsigned long Tc;
-
-int WindowSize = 5000;
-unsigned long windowStartTime;
-bool ElementOnOff = false;
-String element = "";
-unsigned long now = millis();
-unsigned long TotalEnergyUsed = 0;
-unsigned int HartConter = 0;
-
 
 #pragma region Constants
 
@@ -28,8 +15,12 @@ const long prePumpeTimeSparge = 20;
 const int MashCirculationStartTreshold = 10;
 const float BoilTempThreshold = 97.0;
 const int SerialSendingRate = 500; // Milliseconds
+int WindowSize = 5000;
+double Setpoint, Input, Output;
+unsigned long Ts;
+unsigned long Tc;
 
-#pragma endregion Constants
+#pragma endregion 
 
 #pragma region Structs
 struct Sequence
@@ -86,14 +77,14 @@ struct TankInfo
 	LevelSwitch LevelHigh;
 	LevelSwitch LevelOverHeatingElements;
 };
-#pragma endregion Structs
+#pragma endregion
 
 #pragma region Declering Tanks
 TankInfo Hlt;
 TankInfo MashTank;
 TankInfo BoilTank;
 TankInfo AllTanks[3];
-#pragma endregion Declering Tanks
+#pragma endregion
 
 #pragma region Declering Sequences
 Sequence MashInn;
@@ -104,7 +95,7 @@ Sequence MashStep4;
 Sequence Sparge;
 bool SpargeIsDone = false;
 Sequence Boil;
-#pragma endregion Declering Sequences
+#pragma endregion 
 
 #pragma region Declaring Variables
 float ambientTemperature = 0;
@@ -133,6 +124,12 @@ bool messageConfirmd = false;
 bool Cleaning = false;
 int CleaningState = 0;
 int previouslyCleaningState = 0;
+unsigned long windowStartTime;
+bool ElementOnOff = false;
+String element = "";
+unsigned long now = millis();
+unsigned long TotalEnergyUsed = 0;
+unsigned int HartConter = 0;
 String test = "";
 String test2 = "";
 
@@ -157,7 +154,7 @@ String MessageToUser = "";
 
 
 
-#pragma endregion Declaring Variables
+#pragma endregion  
 
 void setup() {
 	
@@ -231,7 +228,7 @@ void loop() {
 	totalAddedVolume = MashInn.AddVolumeSP + MashStep1.AddVolumeSP + MashStep2.AddVolumeSP + MashStep3.AddVolumeSP + MashStep4.AddVolumeSP + Sparge.AddVolumeSP;
 
 	MessageToUser = "";
-#pragma endregion Resetting outputs
+#pragma endregion  
 	// From User interface
 	if (input_0_StringComplete) {
 		ParsingStringFromBrewer(innString);
@@ -270,7 +267,7 @@ void loop() {
 	BoilTank.LevelOverHeatingElements.State = !digitalRead(BoilTank.LevelOverHeatingElements.InputPin);
 	Hlt.LevelOverHeatingElements.State = !digitalRead(Hlt.LevelOverHeatingElements.InputPin);
 
-#pragma endregion Reading Digital Sensors
+#pragma endregion   
 
 	if (BrewingState==0 && CleaningState!=0)
 	{
@@ -331,13 +328,13 @@ void loop() {
 		//else { AllTanks[tank].InnValve.ValueOut = AllTanks[tank].InnValve.Value; }
 		//digitalWrite(AllTanks[tank].InnValve.OutputPin, AllTanks[tank].InnValve.ValueOut);
 	}
-#pragma endregion Setting_Outputs
+#pragma endregion 
 
 #pragma region SendingMessageToSerial
 	if (millis() >= (cloopTime + SerialSendingRate))
 	{
 
-		if (HartConter==32000)
+		if (HartConter>32000)
 		{
 			HartConter = 0;
 		}
@@ -389,7 +386,7 @@ void loop() {
 		AllInfoString = "";
 
 	}
-#pragma endregion SendingMessageToSerial
+#pragma endregion 
 
 	delay(10);
 }

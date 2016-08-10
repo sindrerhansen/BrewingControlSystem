@@ -298,6 +298,7 @@ void loop() {
 
 #pragma region Setting_Outputs 
 
+	BoilTank.TransferPump.Value = !BoilTank.TransferPump.Value;
 	AllTanks[1] = Hlt;
 	AllTanks[2] = MashTank;
 	AllTanks[3]= BoilTank;
@@ -333,7 +334,7 @@ void loop() {
 #pragma region SendingMessageToSerial
 	if (millis() >= (cloopTime + SerialSendingRate))
 	{
-
+		BoilTank.TransferPump.Value = !BoilTank.TransferPump.Value;
 		if (HartConter>32000)
 		{
 			HartConter = 0;

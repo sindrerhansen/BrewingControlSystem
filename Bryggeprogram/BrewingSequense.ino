@@ -280,6 +280,7 @@ void BrewingStateSequense()
 			previouslyBrewingState = BrewingState;
 			refTime = millis();
 			lastTime = 0;
+			lastBoilVolume = BoilTank.CurentVolume;
 		}
 
 		elapsedTimeSeconds = (millis() - refTime) / 1000;
@@ -297,13 +298,12 @@ void BrewingStateSequense()
 		{
 			BrewingState = 41;
 		}
-
-		if ((elapsedTimeSeconds - lastTime) >= 5)
+		if ((elapsedTimeSeconds - lastTime) >= 10)
 		{
 			lastTime = elapsedTimeSeconds;
-			transferRate = (BoilTank.AddedVolume - lastBoilVolume) / 5;
+			transferRate = (BoilTank.AddedVolume - lastBoilVolume) / 10;
 			lastBoilVolume = BoilTank.AddedVolume;
-			if (transferRate < 0.01)
+			if (transferRate < 0.001)
 			{
 				BrewingState = 41;
 			}

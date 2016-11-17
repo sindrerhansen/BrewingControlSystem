@@ -502,6 +502,15 @@ void BrewingStateSequense()
 			refTime = millis();
 			BrewingState = 52;
 		}
+		// To be removed after upgrade
+		if (Hlt.LevelOverHeatingElements.State)
+		{
+			Hlt.CirculationPump.Value = true;
+			Hlt.TemperatureTankSetPoint = MashInn.HltTemperatureSP;
+
+			Hlt.Element1.Value = TankTemperaturOnOffRegulator(Hlt.TemperatureTankSetPoint, Hlt.TemperatureTank, Hlt.LevelOverHeatingElements.State);
+		}
+
 
 		break;
 	case 52:
@@ -513,6 +522,15 @@ void BrewingStateSequense()
 		}
 
 		BoilTank.TransferPump.Value = true;
+
+		// To be removed after upgrade
+		if (Hlt.LevelOverHeatingElements.State)
+		{
+			Hlt.CirculationPump.Value = true;
+			Hlt.TemperatureTankSetPoint = MashInn.HltTemperatureSP;
+
+			Hlt.Element1.Value = TankTemperaturOnOffRegulator(Hlt.TemperatureTankSetPoint, Hlt.TemperatureTank, Hlt.LevelOverHeatingElements.State);
+		}
 
 		break;
 	default:

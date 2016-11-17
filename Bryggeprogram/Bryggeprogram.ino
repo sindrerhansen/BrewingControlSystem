@@ -1,6 +1,27 @@
 // This code is for a Arduino Mega. By Sindre
 //#include "Regulators.h"
 #include "Serial.h"
+#include <UIPEthernet.h>
+#include <UIPServer.h>
+#include <UIPClient.h>
+
+
+// Enter a MAC address and IP address for your controller below.
+// The IP address will be dependent on your local network:
+byte mac[] = {
+	0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEE };
+IPAddress ip(192, 168, 3, 88);
+
+unsigned int localPort = 5959;      // local port to listen on
+
+// buffers for receiving and sending data
+char packetBuffer[1000]; //buffer to hold incoming packet,
+char ReplyBuffer[1000];
+// a string to send back
+
+// An EthernetUDP instance to let us send and receive packets over UDP
+EthernetUDP Udp;
+
 
 
 #pragma region Constants
@@ -151,7 +172,10 @@ String MessageToUser = "";
 #pragma endregion  
 
 void setup() {
-	
+	// start the Ethernet and UDP:
+	Ethernet.begin(mac, ip);
+	Udp.begin(localPort);
+
 	Init();
 
 }
@@ -357,7 +381,15 @@ void loop() {
 		AllInfoString += "HartConter" + String(HartConter) + systemDevider;
 
 		Serial.println(AllInfoString);
+	
+
+		AllInfoString.toCharArray(ReplyBuffer, 1000);
+		// send a reply, to the IP address and port that sent us the packet we received
+		Udp.beginPacket(IPAddress(192, 168, 3, 80), 6000);
+		Udp.write(ReplyBuffer);
+		Udp.endPacket();
 		AllInfoString = "";
+		
 
 	}
 #pragma endregion 

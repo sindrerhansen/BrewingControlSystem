@@ -457,6 +457,14 @@ void BrewingStateSequense()
 			BoilTank.Element2.Value = true;
 		}
 
+		if (Hlt.LevelOverHeatingElements.State)
+		{
+			Hlt.CirculationPump.Value = true;
+			Hlt.TemperatureTankSetPoint = MashInn.HltTemperatureSP;
+
+			Hlt.Element1.Value = TankTemperaturOnOffRegulator(Hlt.TemperatureTankSetPoint, Hlt.TemperatureTank, Hlt.LevelOverHeatingElements.State);
+		}
+
 		if (BoilTank.TemperatureTank>Boil.TemperatureSP)
 		{
 			BrewingState = 51;
@@ -479,7 +487,11 @@ void BrewingStateSequense()
 
 		if (BoilTank.LevelOverHeatingElements.State)
 		{
-			BoilTank.Element1.Value = true;
+			if (BoilTank.TemperatureTank<BoilTank.TemperatureTankSetPoint + 0.8)
+			{
+				BoilTank.Element1.Value = true;
+			}
+			
 			if (BoilTank.TemperatureTank<BoilTank.TemperatureTankSetPoint - 0.2)
 			{
 				BoilTank.Element2.Value = true;

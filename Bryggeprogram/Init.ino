@@ -30,8 +30,8 @@ void Init() {
 	// Setting the HLT inn and out pins 
 	Hlt.CirculationPump.OutputPin = 4;
 	Hlt.TransferPump.OutputPin = 5;
-	Hlt.Element1.OutputPin = 20;
-	Hlt.Element2.OutputPin = 21;
+	Hlt.Element1.OutputPin = 2;
+	Hlt.Element2.OutputPin = 3;
 	Hlt.DrainValve.OutputPin = 26;
 	Hlt.LevelOverHeatingElements.InputPin = 23;
 	Hlt.LevelHigh.InputPin = 27;

@@ -10,7 +10,7 @@
 // The IP address will be dependent on your local network:
 byte mac[] = {
 	0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEE };
-IPAddress ip(192, 168, 3, 88);
+IPAddress ip(192, 168, 10, 10);
 
 unsigned int localPort = 5959;      // local port to listen on
 
@@ -385,7 +385,7 @@ void loop() {
 
 		AllInfoString.toCharArray(ReplyBuffer, 1000);
 		// send a reply, to the IP address and port that sent us the packet we received
-		Udp.beginPacket(IPAddress(192, 168, 3, 80), 6000);
+		Udp.beginPacket(IPAddress(192, 168, 10, 104), 7000);
 		Udp.write(ReplyBuffer);
 		Udp.endPacket();
 		AllInfoString = "";

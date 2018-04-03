@@ -257,7 +257,7 @@ void loop() {
 	// From Boil Tank flow counter
 	if (input_3_StringComplete) {
 		ParsingStringFromBoilFlowIn(input_3_String);
-		input_3_String = "";
+		input_3_String = "";	
 		input_3_StringComplete = false;
 	}
 	
@@ -381,7 +381,7 @@ void loop() {
 		AllInfoString += "Timer" + String(elapsedTimeSeconds) + systemDevider;
 		AllInfoString += "RemTi" + String(remainingTime) + systemDevider;
 		AllInfoString += "CleSt" + String(CleaningState) + systemDevider;
-		AllInfoString += "HartConter" + String(HartConter) + systemDevider;
+		AllInfoString += "HartB" + String(HartConter) + systemDevider;
 
 		Serial.println(AllInfoString);
 		AllInfoString = "";
